@@ -1,0 +1,41 @@
+Nav Bar (Reception Table)
+-About Me
+-Projects
+-Skills
+-Minigame
+-have my actuall resume on the table
+
+-About Me (Locker)
+  -Experience
+    -Arbin(tell people what I did/do)
+  -Links
+    1.Email
+    2.LinkedIn
+    3.GitHub
+    4.LeetCode(need to grind at least like 1 or 2 a day to improve it)
+  -Classes
+    1.Python
+    2.Java
+    3.data structures
+    4.discrete math/structures
+    5.computer security
+    6.operating systems
+    7.linear algebra
+-Projects(treadmil screen)
+  1.Valentines website
+  2.QR scanner
+  3.Some arbin stuff
+  4.Some school stuff (comp sec)
+  5.Do some more after i'm done
+-Skills(dumbbell rack)
+  1.Python
+  2.Java
+  3.JavaScript
+  4.C#
+  5.HTML
+  6.CSS
+  7.React.js
+  8.Three.js
+  9.Blender
+  10.(please do a machine learning project after portfolio is done)
+
