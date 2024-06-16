@@ -1,0 +1,60 @@
+Loader(entrance):
+  focal length: 20mm
+  Location
+    x: 0m
+    y: 30m
+    z: 3.5m
+  Rotation
+    x: 85 degrees
+    y: 0 degrees
+    z: 180 degrees
+NavBar(Reception desk):
+  focal length: 20mm
+  Location
+    x: 0m
+    y: 14m
+    z: 2m
+  Rotation
+    x: 78 degrees
+    y: 0 degrees
+    z: 187 degrees
+Projects(Treadmill):
+  focal length: 20mm
+  Location
+    x: 9.5m
+    y: 8m
+    z: 2m
+  Rotation
+    x: 77 degrees
+    y: 0 degrees
+    z: 0 degrees
+About Me(Locker Room):
+  focal length: 20mm
+  Location
+    x: 10.8m
+    y: -14m
+    z: 2.3m
+  Rotation
+    x: 77 degrees
+    y: 0 degrees
+    z: 0 degrees
+Skills(dumbbell rack):
+  focal length: 20mm
+  Location
+    x: -10m
+    y: -0.3m
+    z: 1.5m
+  Rotation
+    x: 77 degrees
+    y: 0 degrees
+    z: 90 degrees
+MiniGame(bench):
+  focal length: 30mm
+  Location
+    x: -8.7m
+    y: 5.6m
+    z: 2.9m
+  Rotation
+    x: 73 degrees
+    y: 0 degrees
+    z: 0 degrees
