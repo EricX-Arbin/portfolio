@@ -3,7 +3,7 @@ Nav Bar (Reception Table)
 -Projects
 -Skills
 -Minigame
--have my actuall resume on the table
+-have my actual resume on the table that they can click and that the camera will zoom into. 
 
 -About Me (Locker)
   -Experience
@@ -37,5 +37,4 @@ Nav Bar (Reception Table)
   7.React.js
   8.Three.js
   9.Blender
-  10.(please do a machine learning project after portfolio is done)
 
