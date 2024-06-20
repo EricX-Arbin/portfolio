@@ -279,8 +279,6 @@ const Gym = (props) => {
           rotation={[Math.PI / 2, 0, Math.PI]}>
           <mesh
             name="gym_model_017002"
-            
-            
             geometry={nodes.gym_model_017002.geometry}
             material={materials['light_blue rubber']}
           />
