@@ -22,30 +22,22 @@ const Gym = (props) => {
           scale={0.5}>
           <mesh
             name="Cube003"
-            
-            
             geometry={nodes.Cube003.geometry}
             material={materials.menu}
           />
           <mesh
             name="Cube003_1"
-            
-            
             geometry={nodes.Cube003_1.geometry}
             material={materials.rubber}
           />
           <mesh
             name="Cube003_2"
-            
-            
             geometry={nodes.Cube003_2.geometry}
             material={materials.Material}
           />
         </group>
         <mesh
-          name="Plane"
-          
-          
+          name="Plane" 
           geometry={nodes.Plane.geometry}
           material={nodes.Plane.material}
           position={[0, 0.01, 0]}
@@ -53,8 +45,6 @@ const Gym = (props) => {
         />
         <mesh
           name="Text"
-          
-          
           geometry={nodes.Text.geometry}
           material={nodes.Text.material}
           position={[2.35, 1.53, -10.74]}
@@ -64,15 +54,11 @@ const Gym = (props) => {
         <group name="pullupab_rack002" position={[7, 0.1, 1]} rotation={[Math.PI / 2, 0, 0]}>
           <mesh
             name="gym_model_077002"
-            
-            
             geometry={nodes.gym_model_077002.geometry}
             material={materials.metal}
           />
           <mesh
             name="gym_model_077002_1"
-            
-            
             geometry={nodes.gym_model_077002_1.geometry}
             material={materials.rubber}
           />
@@ -80,15 +66,11 @@ const Gym = (props) => {
         <group name="inclined_bench003" position={[-5, 0.1, 1]} rotation={[Math.PI / 2, 0, 0]}>
           <mesh
             name="gym_model_118003"
-            
-            
             geometry={nodes.gym_model_118003.geometry}
             material={materials.metal}
           />
           <mesh
             name="gym_model_118003_1"
-            
-            
             geometry={nodes.gym_model_118003_1.geometry}
             material={materials.rubber}
           />
@@ -96,22 +78,16 @@ const Gym = (props) => {
         <group name="gym_model_020001" position={[-1, 0.1, 1]} rotation={[Math.PI / 2, 0, 0]}>
           <mesh
             name="gym_model_020003_1"
-            
-            
             geometry={nodes.gym_model_020003_1.geometry}
             material={materials.metal}
           />
           <mesh
             name="gym_model_020003_2"
-            
-            
             geometry={nodes.gym_model_020003_2.geometry}
             material={materials.weights}
           />
           <mesh
             name="gym_model_020003_3"
-            
-            
             geometry={nodes.gym_model_020003_3.geometry}
             material={materials.rubber}
           />
