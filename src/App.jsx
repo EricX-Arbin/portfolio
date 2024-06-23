@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 import { Environment } from '@react-three/drei';
@@ -6,8 +6,9 @@ import Loader from './assets/Loader';
 import Gym from './model/gym';
 import Sky from './model/sky';
 import CameraController from './assets/CameraController';
+import About from './pages/About';
 
-const Scene = ({ currentView, onCameraChange, cameraConfigs }) => {
+const Scene = ({ currentView, onCameraChange, cameraConfigs, onPopupTrigger }) => {
   return (
     <>
       <CameraController currentView={currentView} cameraConfigs={cameraConfigs} />
@@ -15,7 +16,7 @@ const Scene = ({ currentView, onCameraChange, cameraConfigs }) => {
       <directionalLight position={[10, 10, 5]} intensity={1} />
       <directionalLight position={[-10, -10, -5]} intensity={0.5} />
       <Environment preset="sunset" />
-      <Gym onCameraChange={onCameraChange} currentView={currentView} />
+      <Gym onCameraChange={onCameraChange} currentView={currentView} onPopupTrigger={onPopupTrigger} />
       <Sky />
     </>
   );
@@ -23,6 +24,7 @@ const Scene = ({ currentView, onCameraChange, cameraConfigs }) => {
 
 const App = () => {
   const [currentView, setCurrentView] = useState('outside');
+  const [activePopup, setActivePopup] = useState(null);
 
   const cameraConfigs = {
     outside: { position: [0, 3, -23.5], rotation: [0, 180, 0], fov: 54, enableMouseFollow: false },
@@ -37,6 +39,10 @@ const App = () => {
     setCurrentView(destination);
   };
 
+  const handlePopupTrigger = (popupType) => { 
+    setActivePopup(popupType);
+  };
+
   return (
     <section className='w-full h-screen relative'>
       <Canvas 
@@ -48,6 +54,7 @@ const App = () => {
             currentView={currentView} 
             onCameraChange={handleCameraChange}
             cameraConfigs={cameraConfigs}
+            onPopupTrigger={handlePopupTrigger}
           />
         </Suspense>
       </Canvas>
@@ -68,18 +75,22 @@ const App = () => {
           Back to Reception
         </button>
       )}
-      {/* {currentView === 'projects' && (
-        {}
+      {activePopup && (
+        <div style={{
+          position: 'absolute',
+          top: '10%',
+          left: '10%',
+          width: '80%',
+          height: '80%',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          border: '2px solid #333',
+          borderRadius: '10px',
+          padding: '20px',
+          overflowY: 'auto'
+        }}>
+          <About activePopup={activePopup} onClose={() => setActivePopup(null)} />
+        </div>
       )}
-      {currentView === 'about' && (
-        {}
-      )}
-      {currentView === 'skills' && (
-        {}
-      )} */}
-
-
-
     </section>
   );
 };

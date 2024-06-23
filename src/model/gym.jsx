@@ -7,29 +7,27 @@ import { useGLTF } from '@react-three/drei';
 import { a } from '@react-spring/three';
 import * as THREE from 'three';
 import gsap from 'gsap';
-
 import gymScene from './Gym.glb'
+import Locker from '../assets/locker';
 
 const Hitbox = ({ position, size, onClick}) => {
   return (
     <mesh position={position} onClick={onClick}>
       <boxGeometry args={size} />
-      <meshBasicMaterial opacity={0} transparent />
+      <meshBasicMaterial color={"red"} opacity={.5} transparent />
     </mesh>
   );
 };
 
-const Gym = ({ onCameraChange }) => {
+const Gym = ({ onCameraChange, currentView, onPopupTrigger }) => {
   const gymRef = useRef();
   const { nodes, materials } = useGLTF(gymScene);
-  const [currentView, setCurrentView] = useState('outside');
   const leftDoorRef = useRef();
   const rightDoorRef = useRef();
   const [showHitboxes, setShowHitboxes] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setCurrentView('reception');
       onCameraChange('reception');
     }, 2000);
 
@@ -38,18 +36,17 @@ const Gym = ({ onCameraChange }) => {
 
   useEffect(() => {
     if (currentView === 'reception') {
-      // Animate doors opening
       gsap.to(leftDoorRef.current.rotation, { z: Math.PI / 2, duration: 1 });
       gsap.to(rightDoorRef.current.rotation, { z: -Math.PI / 2, duration: 1 });
       setShowHitboxes(true);
-    } else {
+    } else if(currentView === 'about'){
+      setShowHitboxes(true);
+      console.log("about");
+    }
+    else {
       setShowHitboxes(false);
     }
   }, [currentView]);
-
-  const handleNavigation = (destination) => {
-    onCameraChange(destination);
-  };
 
   return (
     <>
@@ -80,22 +77,22 @@ const Gym = ({ onCameraChange }) => {
                 <Hitbox 
                   position={[-.375, 0.3, 0.1]} 
                   size={[0.75, 0.2, 0.1]} 
-                  onClick={() => handleNavigation('projects')}
+                  onClick={() => onCameraChange('projects')}
                 />
                 <Hitbox 
                   position={[-.25, 0.1, 0.1]} 
                   size={[1, 0.2, 0.1]} 
-                  onClick={() => handleNavigation('about')}
+                  onClick={() => onCameraChange('about')}
                 />
                 <Hitbox 
                   position={[-.5, -0.1, 0.1]} 
                   size={[0.5, 0.2, 0.1]} 
-                  onClick={() => handleNavigation('skills')}
+                  onClick={() => onCameraChange('skills')}
                 />
                 <Hitbox 
                   position={[-.25, -.3, 0.1]} 
                   size={[1, 0.2, 0.1]} 
-                  onClick={() => handleNavigation('game')}
+                  onClick={() => onCameraChange('game')}
                 />
               </>
             )}
@@ -381,15 +378,11 @@ const Gym = ({ onCameraChange }) => {
           rotation={[Math.PI / 2, 0, Math.PI / 2]}>
           <mesh
             name="gym_model_061004"
-            
-            
             geometry={nodes.gym_model_061004.geometry}
             material={materials.metal}
           />
           <mesh
             name="gym_model_061004_1"
-            
-            
             geometry={nodes.gym_model_061004_1.geometry}
             material={materials.rubber}
           />
@@ -397,62 +390,89 @@ const Gym = ({ onCameraChange }) => {
         <group name="treadmills005" position={[9.7, 0.11, -12.5]} rotation={[Math.PI / 2, 0, 0]}>
           <mesh
             name="gym_model_122005"
-            
-            
             geometry={nodes.gym_model_122005.geometry}
             material={materials['plastic(grey)']}
           />
           <mesh
             name="gym_model_122005_1"
-            
-            
             geometry={nodes.gym_model_122005_1.geometry}
             material={materials['rubber-grey']}
           />
           <mesh
             name="gym_model_122005_2"
-            
-            
             geometry={nodes.gym_model_122005_2.geometry}
             material={materials.rubber}
           />
           <mesh
             name="gym_model_122005_3"
-            
-            
             geometry={nodes.gym_model_122005_3.geometry}
             material={materials.screen}
           />
+          {currentView === 'about' && (
+            <Hitbox 
+              position={[0, -.5, -1.1]} 
+              size={[.25, .15, .25]} 
+              onClick={() => onPopupTrigger('aboutMe')}
+            />
+          )}
         </group>
         <group name="treadmills002" position={[8.1, 0.11, -12.5]} rotation={[Math.PI / 2, 0, 0]}>
           <mesh
             name="gym_model_122006"
-            
-            
             geometry={nodes.gym_model_122006.geometry}
             material={materials['plastic(grey)']}
           />
           <mesh
             name="gym_model_122006_1"
-            
-            
             geometry={nodes.gym_model_122006_1.geometry}
             material={materials['rubber-grey']}
           />
           <mesh
             name="gym_model_122006_2"
-            
-            
             geometry={nodes.gym_model_122006_2.geometry}
             material={materials.rubber}
           />
           <mesh
             name="gym_model_122006_3"
-            
-            
             geometry={nodes.gym_model_122006_3.geometry}
             material={materials.screen}
           />
+          {currentView === 'about' && (
+            <Hitbox 
+              position={[0, -.5, -1.1]} 
+              size={[.25, .15, .25]} 
+              onClick={() => onPopupTrigger('experience')}
+            />
+          )}
+        </group>
+        <group name="treadmills004" position={[11.3, 0.11, -12.5]} rotation={[Math.PI / 2, 0, 0]}>
+          <mesh
+            name="gym_model_122008"
+            geometry={nodes.gym_model_122008.geometry}
+            material={materials['plastic(grey)']}
+          />
+          <mesh
+            name="gym_model_122008_1"
+            geometry={nodes.gym_model_122008_1.geometry}
+            material={materials['rubber-grey']}
+          />
+          <mesh
+            name="gym_model_122008_2"
+            geometry={nodes.gym_model_122008_2.geometry}
+            material={materials.rubber}
+          />
+          <mesh
+            name="gym_model_122008_3"
+            geometry={nodes.gym_model_122008_3.geometry}
+            material={materials.screen}
+          />
+          {currentView === 'about' && (
+            <Hitbox 
+              position={[0, -.5, -1.1]} 
+              size={[.25, .15, .25]} 
+              onClick={() => onPopupTrigger('education')}
+            />
+          )}
         </group>
         <group name="treadmills003" position={[12.9, 0.11, -12.5]} rotation={[Math.PI / 2, 0, 0]}>
           <mesh
@@ -481,36 +501,6 @@ const Gym = ({ onCameraChange }) => {
             
             
             geometry={nodes.gym_model_122007_3.geometry}
-            material={materials.screen}
-          />
-        </group>
-        <group name="treadmills004" position={[11.3, 0.11, -12.5]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_122008"
-            
-            
-            geometry={nodes.gym_model_122008.geometry}
-            material={materials['plastic(grey)']}
-          />
-          <mesh
-            name="gym_model_122008_1"
-            
-            
-            geometry={nodes.gym_model_122008_1.geometry}
-            material={materials['rubber-grey']}
-          />
-          <mesh
-            name="gym_model_122008_2"
-            
-            
-            geometry={nodes.gym_model_122008_2.geometry}
-            material={materials.rubber}
-          />
-          <mesh
-            name="gym_model_122008_3"
-            
-            
-            geometry={nodes.gym_model_122008_3.geometry}
             material={materials.screen}
           />
         </group>
@@ -934,802 +924,95 @@ const Gym = ({ onCameraChange }) => {
           position={[-2.75, 0.1, 9]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
         />
-        <group name="lockers001" position={[4.62, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062014"
-            
-            
-            geometry={nodes.gym_model_062014.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062014_1"
-            
-            
-            geometry={nodes.gym_model_062014_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062014_2"
-            
-            
-            geometry={nodes.gym_model_062014_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right001" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067001"
-              
-              
-              geometry={nodes.gym_model_067001.geometry}
-              material={materials['metal.037']}
-            />
-            <mesh
-              name="gym_model_067001_1"
-              
-              
-              geometry={nodes.gym_model_067001_1.geometry}
-              material={materials['rubber.041']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left011" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066011"
-              
-              
-              geometry={nodes.gym_model_066011.geometry}
-              material={materials['metal.037']}
-            />
-            <mesh
-              name="gym_model_066011_1"
-              
-              
-              geometry={nodes.gym_model_066011_1.geometry}
-              material={materials['rubber.041']}
-            />
-          </group>
-          <group name="lockerdoor_top_right010" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065011"
-              
-              
-              geometry={nodes.gym_model_065011.geometry}
-              material={materials['metal.037']}
-            />
-            <mesh
-              name="gym_model_065011_1"
-              
-              
-              geometry={nodes.gym_model_065011_1.geometry}
-              material={materials['rubber.041']}
-            />
-          </group>
-          <group name="lockerdoor_topleft011" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064011"
-              
-              
-              geometry={nodes.gym_model_064011.geometry}
-              material={materials['metal.037']}
-            />
-            <mesh
-              name="gym_model_064011_1"
-              
-              
-              geometry={nodes.gym_model_064011_1.geometry}
-              material={materials['rubber.041']}
-            />
-          </group>
-        </group>
-        <group name="lockers002" position={[5.87, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062015"
-            
-            
-            geometry={nodes.gym_model_062015.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062015_1"
-            
-            
-            geometry={nodes.gym_model_062015_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062015_2"
-            
-            
-            geometry={nodes.gym_model_062015_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right010" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067010"
-              
-              
-              geometry={nodes.gym_model_067010.geometry}
-              material={materials['metal.038']}
-            />
-            <mesh
-              name="gym_model_067010_1"
-              
-              
-              geometry={nodes.gym_model_067010_1.geometry}
-              material={materials['rubber.042']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left012" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066012"
-              
-              
-              geometry={nodes.gym_model_066012.geometry}
-              material={materials['metal.038']}
-            />
-            <mesh
-              name="gym_model_066012_1"
-              
-              
-              geometry={nodes.gym_model_066012_1.geometry}
-              material={materials['rubber.042']}
-            />
-          </group>
-          <group name="lockerdoor_top_right011" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065012"
-              
-              
-              geometry={nodes.gym_model_065012.geometry}
-              material={materials['metal.038']}
-            />
-            <mesh
-              name="gym_model_065012_1"
-              
-              
-              geometry={nodes.gym_model_065012_1.geometry}
-              material={materials['rubber.042']}
-            />
-          </group>
-          <group name="lockerdoor_topleft012" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064012"
-              
-              
-              geometry={nodes.gym_model_064012.geometry}
-              material={materials['metal.038']}
-            />
-            <mesh
-              name="gym_model_064012_1"
-              
-              
-              geometry={nodes.gym_model_064012_1.geometry}
-              material={materials['rubber.042']}
-            />
-          </group>
-        </group>
-        <group name="lockers003" position={[7.12, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062016"
-            
-            
-            geometry={nodes.gym_model_062016.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062016_1"
-            
-            
-            geometry={nodes.gym_model_062016_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062016_2"
-            
-            
-            geometry={nodes.gym_model_062016_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right011" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067011"
-              
-              
-              geometry={nodes.gym_model_067011.geometry}
-              material={materials['metal.039']}
-            />
-            <mesh
-              name="gym_model_067011_1"
-              
-              
-              geometry={nodes.gym_model_067011_1.geometry}
-              material={materials['rubber.043']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left013" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066013"
-              
-              
-              geometry={nodes.gym_model_066013.geometry}
-              material={materials['metal.039']}
-            />
-            <mesh
-              name="gym_model_066013_1"
-              
-              
-              geometry={nodes.gym_model_066013_1.geometry}
-              material={materials['rubber.043']}
-            />
-          </group>
-          <group name="lockerdoor_top_right012" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065013"
-              
-              
-              geometry={nodes.gym_model_065013.geometry}
-              material={materials['metal.039']}
-            />
-            <mesh
-              name="gym_model_065013_1"
-              
-              
-              geometry={nodes.gym_model_065013_1.geometry}
-              material={materials['rubber.043']}
-            />
-          </group>
-          <group name="lockerdoor_topleft013" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064013"
-              
-              
-              geometry={nodes.gym_model_064013.geometry}
-              material={materials['metal.039']}
-            />
-            <mesh
-              name="gym_model_064013_1"
-              
-              
-              geometry={nodes.gym_model_064013_1.geometry}
-              material={materials['rubber.043']}
-            />
-          </group>
-        </group>
-        <group name="lockers004" position={[8.37, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062017"
-            
-            
-            geometry={nodes.gym_model_062017.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062017_1"
-            
-            
-            geometry={nodes.gym_model_062017_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062017_2"
-            
-            
-            geometry={nodes.gym_model_062017_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right012" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067012"
-              
-              
-              geometry={nodes.gym_model_067012.geometry}
-              material={materials['metal.040']}
-            />
-            <mesh
-              name="gym_model_067012_1"
-              
-              
-              geometry={nodes.gym_model_067012_1.geometry}
-              material={materials['rubber.044']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left014" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066014"
-              
-              
-              geometry={nodes.gym_model_066014.geometry}
-              material={materials['metal.040']}
-            />
-            <mesh
-              name="gym_model_066014_1"
-              
-              
-              geometry={nodes.gym_model_066014_1.geometry}
-              material={materials['rubber.044']}
-            />
-          </group>
-          <group name="lockerdoor_top_right013" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065014"
-              
-              
-              geometry={nodes.gym_model_065014.geometry}
-              material={materials['metal.040']}
-            />
-            <mesh
-              name="gym_model_065014_1"
-              
-              
-              geometry={nodes.gym_model_065014_1.geometry}
-              material={materials['rubber.044']}
-            />
-          </group>
-          <group name="lockerdoor_topleft014" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064014"
-              
-              
-              geometry={nodes.gym_model_064014.geometry}
-              material={materials['metal.040']}
-            />
-            <mesh
-              name="gym_model_064014_1"
-              
-              
-              geometry={nodes.gym_model_064014_1.geometry}
-              material={materials['rubber.044']}
-            />
-          </group>
-        </group>
-        <group name="lockers005" position={[10.87, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062018"
-            
-            
-            geometry={nodes.gym_model_062018.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062018_1"
-            
-            
-            geometry={nodes.gym_model_062018_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062018_2"
-            
-            
-            geometry={nodes.gym_model_062018_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right013" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067013"
-              
-              
-              geometry={nodes.gym_model_067013.geometry}
-              material={materials['metal.041']}
-            />
-            <mesh
-              name="gym_model_067013_1"
-              
-              
-              geometry={nodes.gym_model_067013_1.geometry}
-              material={materials['rubber.045']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left015" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066015"
-              
-              
-              geometry={nodes.gym_model_066015.geometry}
-              material={materials['metal.041']}
-            />
-            <mesh
-              name="gym_model_066015_1"
-              
-              
-              geometry={nodes.gym_model_066015_1.geometry}
-              material={materials['rubber.045']}
-            />
-          </group>
-          <group name="lockerdoor_top_right014" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065015"
-              
-              
-              geometry={nodes.gym_model_065015.geometry}
-              material={materials['metal.041']}
-            />
-            <mesh
-              name="gym_model_065015_1"
-              
-              
-              geometry={nodes.gym_model_065015_1.geometry}
-              material={materials['rubber.045']}
-            />
-          </group>
-          <group name="lockerdoor_topleft015" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064015"
-              
-              
-              geometry={nodes.gym_model_064015.geometry}
-              material={materials['metal.041']}
-            />
-            <mesh
-              name="gym_model_064015_1"
-              
-              
-              geometry={nodes.gym_model_064015_1.geometry}
-              material={materials['rubber.045']}
-            />
-          </group>
-        </group>
-        <group name="lockers006" position={[9.62, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062019"
-            
-            
-            geometry={nodes.gym_model_062019.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062019_1"
-            
-            
-            geometry={nodes.gym_model_062019_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062019_2"
-            
-            
-            geometry={nodes.gym_model_062019_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right014" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067014"
-              
-              
-              geometry={nodes.gym_model_067014.geometry}
-              material={materials['metal.042']}
-            />
-            <mesh
-              name="gym_model_067014_1"
-              
-              
-              geometry={nodes.gym_model_067014_1.geometry}
-              material={materials['rubber.046']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left016" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066016"
-              
-              
-              geometry={nodes.gym_model_066016.geometry}
-              material={materials['metal.042']}
-            />
-            <mesh
-              name="gym_model_066016_1"
-              
-              
-              geometry={nodes.gym_model_066016_1.geometry}
-              material={materials['rubber.046']}
-            />
-          </group>
-          <group name="lockerdoor_top_right015" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065016"
-              
-              
-              geometry={nodes.gym_model_065016.geometry}
-              material={materials['metal.042']}
-            />
-            <mesh
-              name="gym_model_065016_1"
-              
-              
-              geometry={nodes.gym_model_065016_1.geometry}
-              material={materials['rubber.046']}
-            />
-          </group>
-          <group name="lockerdoor_topleft016" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064016"
-              
-              
-              geometry={nodes.gym_model_064016.geometry}
-              material={materials['metal.042']}
-            />
-            <mesh
-              name="gym_model_064016_1"
-              
-              
-              geometry={nodes.gym_model_064016_1.geometry}
-              material={materials['rubber.046']}
-            />
-          </group>
-        </group>
-        <group name="lockers007" position={[13.37, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062020"
-            
-            
-            geometry={nodes.gym_model_062020.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062020_1"
-            
-            
-            geometry={nodes.gym_model_062020_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062020_2"
-            
-            
-            geometry={nodes.gym_model_062020_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right015" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067015"
-              
-              
-              geometry={nodes.gym_model_067015.geometry}
-              material={materials['metal.043']}
-            />
-            <mesh
-              name="gym_model_067015_1"
-              
-              
-              geometry={nodes.gym_model_067015_1.geometry}
-              material={materials['rubber.047']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left017" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066017"
-              
-              
-              geometry={nodes.gym_model_066017.geometry}
-              material={materials['metal.043']}
-            />
-            <mesh
-              name="gym_model_066017_1"
-              
-              
-              geometry={nodes.gym_model_066017_1.geometry}
-              material={materials['rubber.047']}
-            />
-          </group>
-          <group name="lockerdoor_top_right016" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065017"
-              
-              
-              geometry={nodes.gym_model_065017.geometry}
-              material={materials['metal.043']}
-            />
-            <mesh
-              name="gym_model_065017_1"
-              
-              
-              geometry={nodes.gym_model_065017_1.geometry}
-              material={materials['rubber.047']}
-            />
-          </group>
-          <group name="lockerdoor_topleft017" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064017"
-              
-              
-              geometry={nodes.gym_model_064017.geometry}
-              material={materials['metal.043']}
-            />
-            <mesh
-              name="gym_model_064017_1"
-              
-              
-              geometry={nodes.gym_model_064017_1.geometry}
-              material={materials['rubber.047']}
-            />
-          </group>
-        </group>
-        <group name="lockers008" position={[12.12, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062021"
-            
-            
-            geometry={nodes.gym_model_062021.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062021_1"
-            
-            
-            geometry={nodes.gym_model_062021_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062021_2"
-            
-            
-            geometry={nodes.gym_model_062021_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right016" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067016"
-              
-              
-              geometry={nodes.gym_model_067016.geometry}
-              material={materials['metal.044']}
-            />
-            <mesh
-              name="gym_model_067016_1"
-              
-              
-              geometry={nodes.gym_model_067016_1.geometry}
-              material={materials['rubber.048']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left018" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066018"
-              
-              
-              geometry={nodes.gym_model_066018.geometry}
-              material={materials['metal.044']}
-            />
-            <mesh
-              name="gym_model_066018_1"
-              
-              
-              geometry={nodes.gym_model_066018_1.geometry}
-              material={materials['rubber.048']}
-            />
-          </group>
-          <group name="lockerdoor_top_right017" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065018"
-              
-              
-              geometry={nodes.gym_model_065018.geometry}
-              material={materials['metal.044']}
-            />
-            <mesh
-              name="gym_model_065018_1"
-              
-              
-              geometry={nodes.gym_model_065018_1.geometry}
-              material={materials['rubber.048']}
-            />
-          </group>
-          <group name="lockerdoor_topleft018" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064018"
-              
-              
-              geometry={nodes.gym_model_064018.geometry}
-              material={materials['metal.044']}
-            />
-            <mesh
-              name="gym_model_064018_1"
-              
-              
-              geometry={nodes.gym_model_064018_1.geometry}
-              material={materials['rubber.048']}
-            />
-          </group>
-        </group>
-        <group name="lockers009" position={[3.37, 0.1, 9.08]} rotation={[Math.PI / 2, 0, 0]}>
-          <mesh
-            name="gym_model_062022"
-            
-            
-            geometry={nodes.gym_model_062022.geometry}
-            material={materials.weights}
-          />
-          <mesh
-            name="gym_model_062022_1"
-            
-            
-            geometry={nodes.gym_model_062022_1.geometry}
-            material={materials.metal}
-          />
-          <mesh
-            name="gym_model_062022_2"
-            
-            
-            geometry={nodes.gym_model_062022_2.geometry}
-            material={materials.rubber}
-          />
-          <group name="locker_door_bottom_right017" position={[0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_067017"
-              
-              
-              geometry={nodes.gym_model_067017.geometry}
-              material={materials['metal.045']}
-            />
-            <mesh
-              name="gym_model_067017_1"
-              
-              
-              geometry={nodes.gym_model_067017_1.geometry}
-              material={materials['rubber.049']}
-            />
-          </group>
-          <group name="lockerdoor_bottom_left019" position={[-0.592, 0.324, -0.09]}>
-            <mesh
-              name="gym_model_066019"
-              
-              
-              geometry={nodes.gym_model_066019.geometry}
-              material={materials['metal.045']}
-            />
-            <mesh
-              name="gym_model_066019_1"
-              
-              
-              geometry={nodes.gym_model_066019_1.geometry}
-              material={materials['rubber.049']}
-            />
-          </group>
-          <group name="lockerdoor_top_right018" position={[0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_065019"
-              
-              
-              geometry={nodes.gym_model_065019.geometry}
-              material={materials['metal.045']}
-            />
-            <mesh
-              name="gym_model_065019_1"
-              
-              
-              geometry={nodes.gym_model_065019_1.geometry}
-              material={materials['rubber.049']}
-            />
-          </group>
-          <group name="lockerdoor_topleft019" position={[-0.592, 0.324, -1.068]}>
-            <mesh
-              name="gym_model_064019"
-              
-              
-              geometry={nodes.gym_model_064019.geometry}
-              material={materials.metal}
-            />
-            <mesh
-              name="gym_model_064019_1"
-              
-              
-              geometry={nodes.gym_model_064019_1.geometry}
-              material={materials.rubber}
-            />
-          </group>
-        </group>
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[3.37, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 0 clicked")}
+          canInteract={true}
+        />
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[4.62, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 1 clicked")}
+          canInteract={true}
+        />
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[5.87, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 2 clicked")}
+          canInteract={true}
+        />
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[7.12, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 3 clicked")}
+          canInteract={true}
+        />
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[8.37, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 4 clicked")}
+          canInteract={true}
+        />
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[9.62, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 5 clicked")}
+          canInteract={true}
+        />
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[10.87, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 6 clicked")}
+          canInteract={true}
+        />
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[12.12, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 7 clicked")}
+          canInteract={true}
+        />
+        <Locker
+          nodes={nodes}
+          materials={materials}
+          position={[13.37, 0.1, 9.08]}
+          rotation={[Math.PI / 2, 0, 0]}
+          onClick={() => console.log("Locker 8 clicked")}
+          canInteract={true}
+        />
         <mesh
           name="gym_floor"
-          
-          
           geometry={nodes.gym_floor.geometry}
           material={materials['rubber-grey']}
           rotation={[Math.PI / 2, 0, 0]}
           scale={[5, 5, 1]}
         />
+        {/* <mesh
+          name="gym_ceil"
+          geometry={nodes.gym_floor.geometry}
+          material={materials['plastic(grey)']}
+          position={[0,3.5,0]}
+          rotation={[Math.PI / 2, 0, 0]}
+          scale={[5, 5, 1]}
+        /> */}
         <mesh
           name="big_shelves_1"
-          
-          
           geometry={nodes.big_shelves_1.geometry}
           material={materials.dark_wood}
           position={[0, 0.1, -6.8]}
