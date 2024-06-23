@@ -1,120 +1,85 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { Canvas, useThree, useFrame } from '@react-three/fiber';
+import React, { useState } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
-import * as THREE from 'three';
+import { Environment } from '@react-three/drei';
 import Loader from './assets/Loader';
 import Gym from './model/gym';
 import Sky from './model/sky';
+import CameraController from './assets/CameraController';
 
-const CameraController = ({ position, rotation, fov, enableMouseFollow }) => {
-  const { camera, size } = useThree();
-  const mousePosition = useRef([0, 0]);
-  const targetPosition = useRef(new THREE.Vector3(...position));
-  const targetRotation = useRef(new THREE.Euler(0, 0, 0, 'XYZ'));
-
-  useFrame(() => {
-    if (enableMouseFollow) {
-      const offsetX = (mousePosition.current[0] - 0.5) * 0.1;
-      const offsetY = (mousePosition.current[1] - 0.5) * 0.1;
-      camera.position.lerp(new THREE.Vector3(
-        targetPosition.current.x + offsetX,
-        targetPosition.current.y - offsetY,
-        targetPosition.current.z
-      ), 0.1);
-    } else {
-      camera.position.lerp(targetPosition.current, 0.1);
-    }
-    
-    camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, targetRotation.current.x, 0.1);
-    camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, targetRotation.current.y, 0.1);
-    camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, targetRotation.current.z, 0.1);
-    
-    camera.fov = fov;
-    camera.updateProjectionMatrix();
-  });
-
-  React.useEffect(() => {
-    const updateMousePosition = (e) => {
-      mousePosition.current = [e.clientX / size.width, e.clientY / size.height];
-    };
-    window.addEventListener('mousemove', updateMousePosition);
-    return () => window.removeEventListener('mousemove', updateMousePosition);
-  }, [size]);
-
-  React.useEffect(() => {
-    targetPosition.current.set(...position);
-    targetRotation.current.set(
-      THREE.MathUtils.degToRad(rotation[0]),
-      THREE.MathUtils.degToRad(rotation[1]),
-      THREE.MathUtils.degToRad(rotation[2])
-    );
-  }, [position, rotation]);
-
-  return null;
+const Scene = ({ currentView, onCameraChange, cameraConfigs }) => {
+  return (
+    <>
+      <CameraController currentView={currentView} cameraConfigs={cameraConfigs} />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 5]} intensity={1} />
+      <directionalLight position={[-10, -10, -5]} intensity={0.5} />
+      <Environment preset="sunset" />
+      <Gym onCameraChange={onCameraChange} currentView={currentView} />
+      <Sky />
+    </>
+  );
 };
 
 const App = () => {
-  const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
+  const [currentView, setCurrentView] = useState('outside');
 
-  const cameraConfigs = [
-    { position: [0, 10, 3.5], rotation: [-10, 0, 0], fov: 54, enableMouseFollow: true },
-    { position: [0, 14, 2], rotation: [78, 0, 187], fov: 54, enableMouseFollow: true },
-    { position: [9.5, 8, 2], rotation: [77, 0, 0], fov: 54, enableMouseFollow: true },
-    { position: [10.8, -14, 2.3], rotation: [77, 0, 0], fov: 54, enableMouseFollow: true },
-    { position: [-10, -0.3, 1.5], rotation: [77, 0, 90], fov: 54, enableMouseFollow: true },
-    { position: [-8.7, 5.6, 2.9], rotation: [73, 0, 0], fov: 37, enableMouseFollow: true },
-  ];
-
-  const adjustGymForScreenSize = () => {
-    let screenScale = null;
-    let screenPosition = [0, -6.5, -43];
-    let rotation = [0.1, 4.7, 0];
-
-    if (window.innerWidth < 768) {
-      screenScale = [0.9, 0.9, 0.9];
-    } else {
-      screenScale = [1, 1, 1];
-    }
-
-    return [screenScale, screenPosition, rotation];
+  const cameraConfigs = {
+    outside: { position: [0, 3, -23.5], rotation: [0, 180, 0], fov: 54, enableMouseFollow: false },
+    reception: { position: [0, 2, -13.5], rotation: [0, 200, 0], fov: 60, enableMouseFollow: true },
+    about: { position: [9.75, 1.5, -9.5], rotation: [-5, 0, 0], fov: 54, enableMouseFollow: true },
+    projects: { position: [11, 2, 14], rotation: [-2, 0, 0], fov: 70, enableMouseFollow: true },
+    skills: { position: [-10, 2, 1], rotation: [0, 90, 0], fov: 70, enableMouseFollow: true },
+    game: { position: [-8.7, 2, -5], rotation: [0, 0, 0], fov: 60, enableMouseFollow: false },
   };
 
-  const [gymScale, gymPosition, gymRotation] = adjustGymForScreenSize();
-
-  const handleCameraSwitch = useCallback((index) => {
-    setCurrentCameraIndex(index);
-  }, []);
+  const handleCameraChange = (destination) => {
+    setCurrentView(destination);
+  };
 
   return (
     <section className='w-full h-screen relative'>
       <Canvas 
         className='w-full h-screen bg-transparent'
-        camera={{ near: 0.1, far: 1000 }}
+        camera={{ near: 0.1, far: 1000, position: [0, 0, 0], fov: 60 }}
       >
-        <CameraController {...cameraConfigs[currentCameraIndex]} />
         <Suspense fallback={<Loader />}>
-          <directionalLight intensity={1} position={[1, 1, 1]} />
-          <ambientLight intensity={0.5} />
-          <hemisphereLight skyColor="#b1e1ff" groundColor="#000000" intensity={1} />
-          <Sky />
-          <Gym 
-            position={gymPosition}
-            scale={gymScale}
-            rotation={gymRotation}
+          <Scene 
+            currentView={currentView} 
+            onCameraChange={handleCameraChange}
+            cameraConfigs={cameraConfigs}
           />
         </Suspense>
       </Canvas>
-      <div className="absolute bottom-4 left-4 flex space-x-2">
-        {cameraConfigs.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleCameraSwitch(index)}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            Camera {index + 1}
-          </button>
-        ))}
-      </div>
+      {currentView !== 'reception' && currentView !== 'outside' && (
+        <button
+          style={{
+            position: 'absolute',
+            top: '20px',
+            left: '20px',
+            padding: '10px',
+            backgroundColor: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+          onClick={() => handleCameraChange('reception')}
+        >
+          Back to Reception
+        </button>
+      )}
+      {/* {currentView === 'projects' && (
+        {}
+      )}
+      {currentView === 'about' && (
+        {}
+      )}
+      {currentView === 'skills' && (
+        {}
+      )} */}
+
+
+
     </section>
   );
 };
