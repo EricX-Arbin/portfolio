@@ -1082,6 +1082,7 @@ const Gym = ({ onCameraChange, currentView, onPopupTrigger }) => {
             canInteract={true}
             level="Large"
             confidenceLevel = {75}
+            svgPath="/icons/github.svg"
           />
           <mesh
             name="medium_skill_dumbbell"

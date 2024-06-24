@@ -7,6 +7,7 @@ import Gym from './model/gym';
 import Sky from './model/sky';
 import CameraController from './assets/CameraController';
 import About from './pages/About';
+import Logo from './assets/logo';
 
 const Scene = ({ currentView, onCameraChange, cameraConfigs, onPopupTrigger }) => {
   return (

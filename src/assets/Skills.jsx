@@ -1,8 +1,9 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { useSpring, animated } from '@react-spring/three';
 import * as THREE from 'three';
+import Logo from './logo';
 
-const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInteract, level, confidenceLevel }) => {
+const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInteract, level, confidenceLevel, svgPath }) => {
   const [hovered, setHovered] = useState(false);
   const groupRef = useRef();
 
@@ -111,13 +112,14 @@ const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInter
       {dumbbellMesh}
       <animated.mesh
         position={[.5, 0, 0]}
-        rotation={[0 ,Math.PI / 2  , 0 ]}
+        rotation={[0, Math.PI / 2, 0]}
         visible={hovered}
       >
         <planeGeometry args={[1, 0.15]} />
         <primitive object={shaderMaterial} attach="material" />
         <animated.primitive object={shaderMaterial} attach="material" uniforms-progress-value={progress} />
       </animated.mesh>
+      <Logo svgPath={svgPath} scale={0.005} position={[0, 0, 0]} />
     </group>
   );
 };
