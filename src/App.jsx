@@ -7,6 +7,7 @@ import Gym from './model/gym';
 import Sky from './model/sky';
 import CameraController from './assets/CameraController';
 import About from './pages/About';
+import Logo from './assets/logo';
 
 const Scene = ({ currentView, onCameraChange, cameraConfigs, onPopupTrigger }) => {
   return (
@@ -30,7 +31,7 @@ const App = () => {
     outside: { position: [0, 3, -23.5], rotation: [0, 180, 0], fov: 54, enableMouseFollow: false },
     reception: { position: [0, 2, -13.5], rotation: [0, 200, 0], fov: 60, enableMouseFollow: true },
     about: { position: [9.75, 1.5, -9.5], rotation: [-5, 0, 0], fov: 54, enableMouseFollow: true },
-    projects: { position: [11, 2, 14], rotation: [-2, 0, 0], fov: 70, enableMouseFollow: true },
+    projects: { position: [8.5, 2, 14], rotation: [-2, 0, 0], fov: 70, enableMouseFollow: true },
     skills: { position: [-10, 2, 1], rotation: [0, 90, 0], fov: 70, enableMouseFollow: true },
     game: { position: [-8.7, 2, -5], rotation: [0, 0, 0], fov: 60, enableMouseFollow: false },
   };
