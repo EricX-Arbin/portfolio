@@ -9,7 +9,7 @@ extend({ ExtrudeGeometry: THREE.ExtrudeGeometry });
 const fillMaterial = new THREE.MeshBasicMaterial({ color: "#F3FBFB" });
 const strokeMaterial = new THREE.LineBasicMaterial({ color: "#00A5E6" });
 
-const Logo = ({ svgPath, scale = 0.01, ...props }) => {
+const Logo = ({ svgPath, scale, tilt = -.3, ...props }) => {
   const svgData = useLoader(SVGLoader, svgPath);
   const svgGroup = useMemo(() => {
     const group = new THREE.Group();
@@ -26,6 +26,10 @@ const Logo = ({ svgPath, scale = 0.01, ...props }) => {
         const mesh = new THREE.Mesh(meshGeometry, fillMaterial);
         const lines = new THREE.LineSegments(linesGeometry, strokeMaterial);
 
+        // Apply tilt to each shape
+        mesh.rotation.x = tilt;
+        lines.rotation.x = tilt;
+
         updateMap.push({ shape, mesh, lines });
         group.add(mesh, lines);
       });
@@ -36,15 +40,15 @@ const Logo = ({ svgPath, scale = 0.01, ...props }) => {
     const yOffset = size.y / -2;
     const xOffset = size.x / -2;
 
-    // Offset all of group's elements, to center them
     group.children.forEach((item) => {
       item.position.x = xOffset;
       item.position.y = yOffset;
     });
     group.rotateX(-Math.PI / 2);
+    group.rotateZ(Math.PI / 2);
 
     return group;
-  }, [svgData]);
+  }, [svgData, tilt]);
 
   return <primitive object={svgGroup} scale={scale} {...props} />;
 };

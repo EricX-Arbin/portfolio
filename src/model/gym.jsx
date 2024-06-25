@@ -1078,18 +1078,22 @@ const Gym = ({ onCameraChange, currentView, onPopupTrigger }) => {
             materials={materials}
             position={[-13.6, 1.17, 1.1]}
             rotation={[0, 0, 1.204]}
-            onClick={() => console.log("Dumbbell clicked")}
+            scale={0.003}
             canInteract={true}
             level="Large"
             confidenceLevel = {75}
-            svgPath="/icons/github.svg"
+            svgPath="/icons/javascript.svg"
           />
-          <mesh
-            name="medium_skill_dumbbell"
-            geometry={nodes.medium_skill_dumbbell.geometry}
-            material={materials["red rubber"]}
+          <SkillDumbbell
+            nodes={nodes}
+            materials={materials}
             position={[-13.6, 0.8, 1.1]}
             rotation={[0, 0, 1.204]}
+            scale={0.004}
+            canInteract={true}
+            level="Medium"
+            confidenceLevel = {50}
+            svgPath="/icons/blender-original.svg"
           />
           <mesh
             name="small_skill_db"

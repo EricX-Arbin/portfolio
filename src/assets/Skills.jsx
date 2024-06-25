@@ -1,9 +1,9 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/three';
 import * as THREE from 'three';
 import Logo from './logo';
 
-const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInteract, level, confidenceLevel, svgPath }) => {
+const SkillDumbbell = ({ nodes, materials, position, rotation, scale, canInteract, level, confidenceLevel, svgPath }) => {
   const [hovered, setHovered] = useState(false);
   const groupRef = useRef();
 
@@ -21,24 +21,32 @@ const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInter
     }
   };
 
-  const handleClick = (event) => {
-    if (canInteract && onClick) {
-      event.stopPropagation();
-      onClick();
-    }
-  };
-
   const { progress } = useSpring({
     progress: hovered ? confidenceLevel / 100 : 0,
     config: { mass: 1, tension: 280, friction: 60 }
   });
 
   const shaderMaterial = useMemo(() => {
+    let color2;
+    switch (level) {
+      case 'Large':
+        color2 = new THREE.Color('limegreen');
+        break;
+      case 'Medium':
+        color2 = new THREE.Color('yellow');
+        break;
+      case 'Small':
+        color2 = new THREE.Color('red');
+        break;
+      default:
+        color2 = new THREE.Color('limegreen');
+    }
+
     return new THREE.ShaderMaterial({
       uniforms: {
         progress: { value: 0 },
         color1: { value: new THREE.Color('gray') },
-        color2: { value: new THREE.Color('limegreen') },
+        color2: { value: color2 },
       },
       vertexShader: `
         varying vec2 vUv;
@@ -58,7 +66,7 @@ const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInter
         }
       `,
     });
-  }, []);
+  }, [level]);
 
   let dumbbellMesh;
   switch (level) {
@@ -67,7 +75,7 @@ const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInter
         <mesh
           name="large_skill_dumbbell001"
           geometry={nodes.large_skill_dumbbell001.geometry}
-          material={materials.rubber}
+          material={materials["green rubber"]}
         />
       );
       break;
@@ -76,7 +84,7 @@ const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInter
         <mesh
           name="medium_skill_dumbbell001"
           geometry={nodes.medium_skill_dumbbell001.geometry}
-          material={materials["red rubber"]}
+          material={materials["yellow rubber"]}
         />
       );
       break;
@@ -85,7 +93,7 @@ const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInter
         <mesh
           name="small_skill_db001"
           geometry={nodes.small_skill_db001.geometry}
-          material={materials["yellow rubber"]}
+          material={materials["red rubber"]}
         />
       );
       break;
@@ -105,7 +113,6 @@ const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInter
       ref={groupRef}
       position={position}
       rotation={rotation}
-      onClick={handleClick}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
@@ -119,7 +126,7 @@ const SkillDumbbell = ({ nodes, materials, position, rotation, onClick, canInter
         <primitive object={shaderMaterial} attach="material" />
         <animated.primitive object={shaderMaterial} attach="material" uniforms-progress-value={progress} />
       </animated.mesh>
-      <Logo svgPath={svgPath} scale={0.005} position={[0, 0, 0]} />
+      <Logo svgPath={svgPath} scale={scale} position={[0, -.25, 0]} />
     </group>
   );
 };
